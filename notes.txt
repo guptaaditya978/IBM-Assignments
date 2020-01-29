@@ -1,0 +1,104 @@
+boolean-1-true/false
+byte-1-integer iputs
+short-2
+char-2
+int - 4
+long- 8
+float- 4
+double- 8
+
+
+
+float var=760.98f;
+double var=760.98;
+
+
+boolean-1-true/false
+byte-1-integer iputs
+short-2
+char-2
+int - 4
+long- 8
+float- 4
+double- 8
+
+
+
+float var=760.98f;
+double var=760.98;
+int myv=(int) var;
+
+switch(expression){//expression be int,char,String,enum)
+	case value:
+		stmt/s;
+	case value:
+		stmt/s;
+	default:
+		stmt/s;	
+}
+{
+	"shell_cmd": "javac \"$file\"",
+	"file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+	"selector": "source.java"
+}
+
+
+
+char []ch = new char[20];
+
+ch[0] = 'y';
+ch[1] = 'r';
+ch[10] = 'n';
+
+double []dr = {56.90, 45.87, 34.887};
+
+new int[]{456, 88, 5422, 8888}  ----> Anonymus array
+
+
+for(declaaration : nameOfAray){
+
+}
+
+for(int value : arr){
+	System.out.println(value)
+}
+
+boolean - false
+byte
+short
+int 
+long-0
+
+float
+double-0.0
+
+char-\u00(null character)
+
+
+
+
+
+VAR-ARGS
+
+void met(Type...identifier){
+
+}
+
+Rules for var args-----
+1)method can only have one var args
+2) it should be the last in the sequence
+
+
+Garbage Collection
+JVM -----> Garbage Collection
+    -Nulling A Reference
+    -Reassigning a Reference
+    -when an object goes out of context
+
+
+Enumerations, 1.5
+
+enum identifier{Const1, Const2, Const3}
+
+enum values{A, B, C}       // all the values are public static and final
+
