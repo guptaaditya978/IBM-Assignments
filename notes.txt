@@ -102,3 +102,17 @@ enum identifier{Const1, Const2, Const3}
 
 enum values{A, B, C}       // all the values are public static and final
 
+
+
+
+Overriding- the overiding method's scope can be broader or same but cannot be narrowed down as that of overridden method
+
+
+Abstract class cannot be instantiate
+
+refernce variable of abstract classes and intefaces can be made
+
+
+A super type reference variable can refer to an object of the sub class.
+
+INterface ref. eat()  ------>  check first function is present in interface or not and then display the details of the object created 
