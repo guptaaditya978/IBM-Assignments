@@ -115,4 +115,30 @@ refernce variable of abstract classes and intefaces can be made
 
 A super type reference variable can refer to an object of the sub class.
 
-INterface ref. eat()  ------>  check first function is present in interface or not and then display the details of the object created 
+INterface ref. eat()  ------>  check first function is present in interface or not and then display the details of the object created.
+
+
+
+
+
+Wrapper Class - when we want to use methods with primitive. we can't use directly we have to wrap them in the wrapper class.
+
+boolean - Boolean
+byte    - Byte
+short   - Short
+char    - Character
+int     - Integer
+long    - Long
+float   - Float
+double  - Double
+
+
+
+wrapper---->primitive(automatcally) is called unbox....ing
+primitive--->wrapper(automatically) is called autobox..ing
+
+
+
+SCP - String Constant Pool
+
+ 
