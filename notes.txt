@@ -141,4 +141,100 @@ primitive--->wrapper(automatically) is called autobox..ing
 
 SCP - String Constant Pool
 
- 
+
+
+
+Throwable
+	-Exception
+		-IOException
+			-FileNotFoundException
+		-InterruptedException
+		-....................
+		-...................
+		-RuntimeException
+			-IndexOutOfBoundsException
+				-ArrayIndexOutOfBoundsException
+				-StringIndexOutOfBoundException
+			-NullPointerException
+			-NumberFormatException
+			-ArithmeticException
+			-....................
+			-...................
+
+	-Error
+		-StackOverflowException
+		-JVMOutOfMemoryException
+	
+
+
+
+ASSERTIONS
+1) Really Simple Version
+2) Simple Version
+
+
+javac -source 1.3 AssertionsDemo.java
+
+Do not use assertions on runtime methods
+Do not use assertions on public methods
+
+
+
+
+Thread
+     -Thread Of Execution
+     -An instance of the java.lang.Thread Class
+
+
+Phases in the life cycle of the thread
+
+1st Phase----->  Start(Not yet Alive ,Not Running)------>when POJO(Plain Old Java Object) is created
+2nd Phase----->  Runnable(Alive,Not Running)-------> when start is called or entered the run method
+3rd Phase----->  Running(Alive,Running)---------->Entered the run method
+
+Optional Phase
+Waiting/Suspend/Sleeping
+
+4th Phase----->  Dead(Not Alive, Not Running)
+
+The runnable is a functional interface------> Having only one method
+
+
+
+
+Locks
+	Synchronised
+
+
+wait()
+notify()
+notifyAll()
+
+all for objects
+these are non static mehtods
+
+for an object to be called wait it must have the lock of that object.
+			------- METHOD wait() IS CALLED FROM THE SYNCHRONIZED OBJECT ONLY
+
+
+	Collections 
+		-Store Objects
+		-Shrink Memory
+		-Growable
+		-Sortable
+		-Searchable
+	Ordering/Sorting
+
+	3 Mahor interfaces 
+	-List-----> When Duplicacy is not a concern
+		-Vector, ArrayList(ordered but unsorted, LinkedList
+	-Set------> When Duplicacy is a concern
+		-HashSet(unordered and unsorted), TreeSet(Sorted and ordered), HashTable
+	-Map------>When you want to store in key-values pairs
+		-HashMap(unuordered and unsorted), TreeMap(Sorted and ordered)
+
+Custom Sorting Collections
+	-Comparable
+		-public int compareTo(Object obj)
+	-Comparator
+		-public int comparator(Object obj1,Object obj2)
