@@ -238,3 +238,27 @@ Custom Sorting Collections
 		-public int compareTo(Object obj)
 	-Comparator
 		-public int comparator(Object obj1,Object obj2)
+
+
+
+HashMap work on the principle of hashing
+whenever we override hashcode we have to override equals as well
+
+
+Covariant returns
+A{
+  A func(){
+   
+    }	
+}
+B extends A{
+  A func(){
+   
+    }	
+}
+B extends A{
+  B func(){-----------------------> Covariant returns
+   
+    }	
+}
+Polumorphic assignments do not work for generics
