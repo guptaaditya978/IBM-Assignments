@@ -15,6 +15,15 @@ public class Wallet {
 		this.pin = pin;
 	}
 	
+	public Wallet() {
+		this.walletid = 0;
+		this.walletName = "";
+		this.walletEmailId = "";
+		this.walletPhoneNumber = Long.valueOf(0);
+		this.balance = 0;
+		this.pin = 0;
+	}
+
 	public int getWalletid() {
 		return walletid;
 	}

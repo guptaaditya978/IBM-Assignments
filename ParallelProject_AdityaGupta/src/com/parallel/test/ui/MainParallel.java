@@ -28,6 +28,12 @@ public class MainParallel {
 					// TODO Auto-generated catch block
 					System.out.println("This mobile number is already registered");
 					//e.printStackTrace();
+				}catch (InputMismatchException e) {
+					//System.out.println(e);
+					// TODO Auto-generated catch block
+					System.out.println("PLease Enter a Valid input");
+					//e.printStackTrace();
+					sc.nextLine();
 				}
 				catch(Exception f) {
 					System.out.println("PLease Enter a Valid input");
@@ -40,12 +46,14 @@ public class MainParallel {
 				} catch (InputMismatchException e) {
 					//System.out.println(e);
 					// TODO Auto-generated catch block
-					System.out.println("PLease Enter a Valid input");
+					System.out.println("Can't put a string in number");
+					sc.nextLine();
 					//e.printStackTrace();
 				}catch(SQLException es) {
 					System.out.println("PLease Enter a Valid input");
-				}catch(Exception d) {
-					System.out.println("PLease Enter a Valid input");
+				}
+				catch(InterruptedException f) {
+					System.out.println("Sorry Bruh");
 				}
 				
 				
@@ -59,7 +67,7 @@ public class MainParallel {
 			}
 		}
 	}
-	public static void add() throws SQLException, InterruptedException {
+	public static void add() throws SQLException, InterruptedException, InputMismatchException {
 		System.out.println("Enter your Name");
 		String tmpname = sc.next();
 		System.out.println("Enter the email-Id");
@@ -68,36 +76,48 @@ public class MainParallel {
 		Long tmpphn = sc.nextLong();
 		System.out.println("Enter your Pin");
 		int pin = sc.nextInt();
-		if(s.validate(tmpname,tmpEmailId,tmpphn,pin)){
-			Wallet w = new Wallet(tmpname,tmpEmailId,tmpphn,500,pin);
-			s.create(w);
+		Wallet w = new Wallet(tmpname,tmpEmailId,tmpphn,500,pin);
+		if(s.validate(w)){
+			//Wallet w = new Wallet(tmpname,tmpEmailId,tmpphn,500,pin);
+			if(s.create(w)) {
+				System.out.println("Employee Added Sucesfully");
+			}
+			else {
+				System.out.println("Employee can't be Added");
+			}
 		}
 		Thread.sleep(5000);
 		
 	}
-	public static void login() throws SQLException, InterruptedException, Exception {
+	public static void login() throws SQLException, InterruptedException,InputMismatchException {
 		
 		System.out.println("Enter your phone number which is linked to wallet");
 		Long phn = sc.nextLong();
 		System.out.println("Enter your pin");
 		int pin = sc.nextInt();
-		if(s.verifies(phn,pin)) {
-			afterLogin(phn,pin);
+		//sc.nextLine();
+		Wallet w = new Wallet();
+		w.setPin(pin);
+		w.setWalletPhoneNumber(phn);
+		if(s.verifies(w)) {
+			afterLogin(w);
 		}
 		else {
 			System.out.println("Invalid Credentials");
 		}
 		Thread.sleep(5000);
 	}
-	public static void afterLogin(Long phn,int pin) throws SQLException, InterruptedException {
+	public static void afterLogin(Wallet w) throws SQLException, InterruptedException, InputMismatchException {
 		
-		String name = s.users(phn);
-		int id = s.userId(phn);
+		w.setWalletName(s.username(w));
+		w.setWalletid(s.userId(w));
+		w.setBalance(s.balance(w));
+		w.setWalletEmailId(s.userEmail(w));
 		//System.out.println(name);
 		//System.out.println(id);
 		Thread.sleep(3000);
 		while(true) {
-			System.out.println("Hello  "+s.users(phn)+"   Welcome to your Dashboard");
+			System.out.println("Hello  "+w.getWalletName()+"   Welcome to your Dashboard");
 			System.out.println("Choose an Option");
 			System.out.println("1. Payment");
 			System.out.println("2. Fund Transfer");
@@ -113,33 +133,62 @@ public class MainParallel {
 			if(ch == 1) {
 				System.out.println("Please enter the amount you want to withdraw for the payment");
 				int amt = sc.nextInt();
-				if(s.withdraw(id,amt)==1) {
+				if(s.withdraw(w,amt)==1) {
 					System.out.println("Payment Done");
+					System.out.println("Your Updated Balance is "+s.balance(w));
+				}
+				else {
+					System.out.println("Low Balance");
 				}
 				Thread.sleep(3000);
 			}
 			else if(ch == 2) {
+				Wallet w2 = new Wallet();
 				System.out.println("Please enter the phone number you want to send money");
 				Long phn2=sc.nextLong();
+				w2.setWalletPhoneNumber(phn2);
 				System.out.println("Please enter the amount you want to send");
 				int amt2 = sc.nextInt();
-				int id2 = s.userId(phn2);
-				if(id2 == 0) {
+				if(s.userId(w2) == 0) {
 					System.out.println("No account is Linked to this Number");
 				}
 				else {
-					s.fundTransfer(id,id2,amt2);
+					w2.setWalletid(s.userId(w2));
+					if(s.fundTransfer(w,w2,amt2)==1) {
+						System.out.println("Money is Sucessfully Transfered");
+						System.out.println("Your Updated Balance is "+s.balance(w));
+					}
+					else {
+						System.out.println("Payment Unsucessful");
+					}
 				}
 				Thread.sleep(3000);
 			}
 			else if(ch == 3) {
 				System.out.println("Please enter the amount you want to add");
 				int amt2 = sc.nextInt();
-				s.deposit(id,amt2);
+				if(s.deposit(w,amt2)==1) {
+					System.out.println("Money Added to the wallet successfully");
+					System.out.println("Your Updated Balance is "+s.balance(w));
+				}
+				else {
+					System.out.println("Money cannot be added");
+				}
 				Thread.sleep(3000);
 			}
 			else if(ch == 4) {
-				s.viewTransactions(id);
+				
+				System.out.println("Tansaction Id       Date           Amount        Type         Balance");
+				if(s.viewTransactions(w).size()!=0) {
+					for(String a:s.viewTransactions(w)) {
+						System.out.println(a);
+					}
+				}
+				else {
+					System.out.println("No Transactions Yet");
+				}
+				
+				
 				Thread.sleep(7000);
 			}
 			else if(ch == 5) {
@@ -154,7 +203,8 @@ public class MainParallel {
 					System.out.println("Enter the Name");
 					String tmpname = sc.next();
 					if(tmpname.compareTo("")!=0) {
-						s.update1(id, tmpname);
+						w.setWalletName(tmpname);
+						s.update(w);
 					}
 					else {
 						throw new SQLException();
@@ -165,7 +215,7 @@ public class MainParallel {
 					System.out.println("Enter the Email-Id");
 					String email = sc.next();	
 					if(s.validate(email)) {
-						s.update2(id,email);
+						w.setWalletEmailId(email);
 					}
 					else {
 						throw new SQLException();
@@ -176,7 +226,7 @@ public class MainParallel {
 					System.out.println("Enter the Phone Number");
 					Long phnu = sc.nextLong();
 					if(s.validate(phnu)) {
-						s.update1(id,phnu);
+						w.setWalletPhoneNumber(phnu);
 					}
 					else {
 						throw new SQLException();
@@ -186,8 +236,8 @@ public class MainParallel {
 				else if(k1 == 4) {
 					System.out.println("Enter the Pin");
 					int pins = sc.nextInt();
-					if(s.validate(pin)) {
-						s.update2(id,pins);
+					if(s.validate(pins)) {
+						w.setPin(pins);
 					}
 					else{
 						throw new SQLException();
@@ -196,15 +246,21 @@ public class MainParallel {
 				else {
 					System.out.println("PLease Enter valid option");
 				}
+				if(s.update(w)) {
+					System.out.println("Updated Sucessully");
+				}
+				else {
+					System.out.println("Not updated Sucessfully");
+				}
 				Thread.sleep(5000);
 			}
 			
 			else if(ch ==6) {
-				System.out.println("Your Balance is "+s.balance(id));
+				System.out.println("Your Balance is "+s.balance(w));
 				Thread.sleep(3000);
 			}
 			else if(ch == 7) {
-				System.out.println("Thank You"+ name);
+				System.out.println("Thank You "+ w.getWalletName());
 				break;
 			}
 			else {

@@ -11,19 +11,22 @@ public class ServiceParallel{
 		
 		ArrayList<Wallet> storingList = new ArrayList<>();
 		DatabaseParallel d = new DatabaseParallel();
-		public boolean validate(String tmpname,String tmpEmailId,Long tmpphn,int pin) {
+		public boolean validate(Wallet w) {
 			String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 			
-			if(! (tmpEmailId.matches(regex))) {
+			if(! (w.getWalletEmailId().matches(regex))) {
 				System.out.println("Please enter the valid email");
 				return false;
 			}
-			if(Long.toString(tmpphn).length()!=10) {
+			if(Long.toString(w.getWalletPhoneNumber()).length()!=10) {
 				System.out.println("Please enter the valid phone number");
 				return false;
 			}
-			if(Integer.toString(pin).length()<=4) {
+			if(Integer.toString(w.getPin()).length()<4) {
 				System.out.println("Please enter the valid pin");
+				return false;
+			}
+			if(w.getWalletName().compareTo("")==0) {
 				return false;
 			}
 			return true;
@@ -55,47 +58,40 @@ public class ServiceParallel{
 		}
 		
 		
-		public void create(Wallet w) throws SQLException {
-			d.create(w);
+		public boolean create(Wallet w) throws SQLException {
+			return d.create(w);
 		}
 		
-		public String users(long phn) throws SQLException {
-			return d.users(phn);
+		public String username(Wallet w) throws SQLException {
+			return d.username(w);
 		}
-		public int userId(long phn) throws SQLException {
-			return d.userId(phn);
+		public String userEmail(Wallet w) throws SQLException {
+			return d.userEmail(w);
 		}
-		
-		public boolean verifies(long phn, int pin) throws SQLException {
-			return d.verifies(phn,pin);
-		}
-		
-		public int withdraw(int id,int amt) throws SQLException {
-			return d.withdraw(id,amt);
-		}
-		public void fundTransfer(int id1,int id2,int amt) throws SQLException {
-			d.fundTransfer(id1,id2,amt);
-		}
-		public void deposit(int id, int amt) throws SQLException {
-			d.deposit(id, amt);
-		}
-		public void viewTransactions(int id) throws SQLException {
-			d.viewTransactions(id);
-		}
-		public void update1(int id,String name) throws SQLException {
-			d.update1(id,name);
-		}
-		public void update2(int id,String email) throws SQLException {
-			d.update2(id,email);
-		}
-		public void update1(int id,Long phn) throws SQLException {
-			d.update1(id,phn);
-		}
-		public void update2(int id,int pin) throws SQLException {
-			d.update2(id,pin);
-		}
-		public int balance(int id) throws SQLException {
-			return d.Balance(id);
+		public int userId(Wallet w) throws SQLException {
+			return d.userId(w);
 		}
 		
+		public boolean verifies(Wallet w) throws SQLException {
+			return d.verifies(w);
+		}
+		
+		public int withdraw(Wallet w,int amt) throws SQLException {
+			return d.withdraw(w,amt);
+		}
+		public int fundTransfer(Wallet w,Wallet w2,int amt) throws SQLException {
+			return d.fundTransfer(w,w2,amt);
+		}
+		public int deposit(Wallet w, int amt) throws SQLException {
+			return d.deposit(w, amt);
+		}
+		public ArrayList<String> viewTransactions(Wallet w) throws SQLException {
+			return d.viewTransactions(w);
+		}
+		public boolean update(Wallet w) throws SQLException {
+			return d.update(w);
+		}
+		public int balance(Wallet w) throws SQLException {
+			return d.Balance(w);
+		}
 }

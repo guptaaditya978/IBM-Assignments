@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
 
+
+import static com.parallel.test.dao.ConnectionsParallel.conn;
+import static com.parallel.test.dao.ConnectionsParallel.ps;
 import com.parallel.test.bean.Wallet;
 
 
@@ -17,67 +20,74 @@ public class DatabaseParallel {
 	static int transactionNumber=10001;
 	static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");   
 	
-	public void create(Wallet w) throws SQLException {
+	public boolean create(Wallet w) throws SQLException {
 		
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from walletusers");
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+		ps = conn.prepareStatement("select * from walletusers");
+		ResultSet resultSet = ps.executeQuery();
 
         if(resultSet.next()==false) {
         	//System.out.println("No Records present in the Table");
-        	ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("insert into walletusers values(?,?,?,?,?,?)");
-        	ConnectionsParallel.ps.setInt(1,101);
-        	ConnectionsParallel.ps.setString(2,w.getWalletName());
-    		ConnectionsParallel.ps.setString(3,w.getWalletEmailId());
-    		ConnectionsParallel.ps.setLong(4,w.getWalletPhoneNumber());
-    		ConnectionsParallel.ps.setInt(5,w.getBalance());
-    		ConnectionsParallel.ps.setInt(6,w.getPin());
-    		if(ConnectionsParallel.ps.executeUpdate()>0) {
-    			System.out.println("Employee Added Sucesfully");
+        	ps = conn.prepareStatement("insert into walletusers values(?,?,?,?,?,?)");
+        	ps.setInt(1,101);
+        	ps.setString(2,w.getWalletName());
+    		ps.setString(3,w.getWalletEmailId());
+    		ps.setLong(4,w.getWalletPhoneNumber());
+    		ps.setInt(5,w.getBalance());
+    		ps.setInt(6,w.getPin());
+    		if(ps.executeUpdate()>0) {
+    			
     			//Thread.sleep(3000);
+    			return true;
     		}
     		else{
-    			System.out.println("Employee can't be Added");
+    			return false;
     			//Thread.sleep(1500);
     		}
         	//Thread.sleep(3000);
         }
         else {
         	
-        	ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("insert into walletusers values(NULL,?,?,?,?,?)");
-			ConnectionsParallel.ps.setString(1,w.getWalletName());
-			ConnectionsParallel.ps.setString(2,w.getWalletEmailId());
-			ConnectionsParallel.ps.setLong(3,w.getWalletPhoneNumber());
-			ConnectionsParallel.ps.setInt(4,w.getBalance());
-			ConnectionsParallel.ps.setInt(5,w.getPin());
+        	ps = conn.prepareStatement("insert into walletusers values(NULL,?,?,?,?,?)");
+			ps.setString(1,w.getWalletName());
+			ps.setString(2,w.getWalletEmailId());
+			ps.setLong(3,w.getWalletPhoneNumber());
+			ps.setInt(4,w.getBalance());
+			ps.setInt(5,w.getPin());
 			
-			if(ConnectionsParallel.ps.executeUpdate()>0) {
-				System.out.println("Accounted Created Sucesfully");
-			//Thread.sleep(3000);
+			if(ps.executeUpdate()>0) {
+				return true;
+				//Thread.sleep(3000);
 			}
 			else{
-				System.out.println("Account can't be created");
-			//Thread.sleep(1500);
+				return false;
+				//Thread.sleep(1500);
 			}
         }
 	}
 	
 	
-	public String users(long phn) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from walletusers where walletPhoneNumber=?");
-		ConnectionsParallel.ps.setLong(1,phn);
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+	public String username(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("select * from walletusers where walletPhoneNumber=?");
+		ps.setLong(1,w.getWalletPhoneNumber());
+		ResultSet resultSet = ps.executeQuery();
 		resultSet.next();
 		return resultSet.getString("walletName");
 	}
+	public String userEmail(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("select * from walletusers where walletPhoneNumber=?");
+		ps.setLong(1,w.getWalletPhoneNumber());
+		ResultSet resultSet = ps.executeQuery();
+		resultSet.next();
+		return resultSet.getString("walletEmailId");
+	}
 	
-	public boolean verifies(long phn,int pin) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from walletusers where walletPhoneNumber=? && pin=?");
-		ConnectionsParallel.ps.setLong(1,phn);
-		ConnectionsParallel.ps.setInt(2,pin);
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+	public boolean verifies(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("select * from walletusers where walletPhoneNumber=? && pin=?");
+		ps.setLong(1,w.getWalletPhoneNumber());
+		ps.setInt(2,w.getPin());
+		ResultSet resultSet = ps.executeQuery();
 		
 		if(resultSet.next()  ==false) {
-        	System.out.println("No Records present in the Table");
         	return false;
         	//Thread.sleep(3000);
         }
@@ -87,10 +97,10 @@ public class DatabaseParallel {
         }
 		
 	}
-	public int userId(long phn) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from walletusers where walletPhoneNumber=?");
-		ConnectionsParallel.ps.setLong(1,phn);
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+	public int userId(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("select * from walletusers where walletPhoneNumber=?");
+		ps.setLong(1,w.getWalletPhoneNumber());
+		ResultSet resultSet = ps.executeQuery();
 		
 		if(resultSet.next()==false) {
         	//System.out.println("No Records present in the Table");
@@ -104,169 +114,149 @@ public class DatabaseParallel {
         }
 	}
 	
-	public int withdraw(int id,int amt) throws SQLException {
+	public int withdraw(Wallet w,int amt) throws SQLException {
 		
-		int balance1 = this.Balance(id);
+		int balance1 = this.Balance(w);
 		
 		if(balance1-amt>0) {
-			ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set balance=? where id=?");
-			ConnectionsParallel.ps.setInt(1,balance1-amt);
-			ConnectionsParallel.ps.setInt(2,id);
-			if(ConnectionsParallel.ps.executeUpdate()>0){
-				this.addDebitTransaction(id,amt);
+			ps = conn.prepareStatement("update walletusers set balance=? where id=?");
+			ps.setInt(1,balance1-amt);
+			ps.setInt(2,w.getWalletid());
+			if(ps.executeUpdate()>0){
+				if(this.addDebitTransaction(w,amt)){
+					
+				}
+				//System.out.println("Transactoin Done Sucesfully");
 				//System.out.println("Payment Done Successfully");
-				System.out.println("Balance is " + this.Balance(id));
-			}
-			else {
-				System.out.println("Payment unsucessfull");
 			}
 			return 1;
 		}
 		else {
-			this.lowBalance();
 			return 0;
 		}
 	}
 	
-	public void lowBalance() {
-		System.out.println("You have insufficient Balance");
-	}
 	
-	public void addDebitTransaction(int id,int amt) throws SQLException {
+	
+	public boolean addDebitTransaction(Wallet w,int amt) throws SQLException {
 		
-		int balance2 = this.Balance(id);
+		int balance2 = this.Balance(w);
 		
 		LocalDateTime now = LocalDateTime.now();
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("insert into transactions values(?,?,?,?,?,?)");
-		ConnectionsParallel.ps.setInt(1,id);
-		ConnectionsParallel.ps.setInt(2,transactionNumber++);
-		ConnectionsParallel.ps.setString(3,dtf.format(now));
-		ConnectionsParallel.ps.setString(4,"Debit");
-		ConnectionsParallel.ps.setInt(5,amt);
-		ConnectionsParallel.ps.setInt(6,balance2);
+		ps = conn.prepareStatement("insert into transactions values(?,?,?,?,?,?)");
+		ps.setInt(1,w.getWalletid());
+		ps.setInt(2,transactionNumber++);
+		ps.setString(3,dtf.format(now));
+		ps.setString(4,"Debit");
+		ps.setInt(5,amt);
+		ps.setInt(6,balance2);
 		
-		if(ConnectionsParallel.ps.executeUpdate()>0) {
-			System.out.println("Transactoin Done Sucesfully");
+		if(ps.executeUpdate()>0) {
+			return true;
 		//Thread.sleep(3000);
 		}
+		return false;
 	}
-		public void addCreditTransaction(int id,int amt) throws SQLException {
+		public boolean addCreditTransaction(Wallet w,int amt) throws SQLException {
 		
-		int balance3 = this.Balance(id);
+		int balance3 = this.Balance(w);
 		LocalDateTime now = LocalDateTime.now();
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("insert into transactions values(?,?,?,?,?,?)");
-		ConnectionsParallel.ps.setInt(1,id);
-		ConnectionsParallel.ps.setInt(2,transactionNumber++);
-		ConnectionsParallel.ps.setString(3,dtf.format(now));
-		ConnectionsParallel.ps.setString(4,"Credit");
-		ConnectionsParallel.ps.setInt(5,amt);
-		ConnectionsParallel.ps.setInt(6,balance3);
+		ps = conn.prepareStatement("insert into transactions values(?,?,?,?,?,?)");
+		ps.setInt(1,w.getWalletid());
+		ps.setInt(2,transactionNumber++);
+		ps.setString(3,dtf.format(now));
+		ps.setString(4,"Credit");
+		ps.setInt(5,amt);
+		ps.setInt(6,balance3);
 		
-		if(ConnectionsParallel.ps.executeUpdate()>0) {
-			System.out.println("Transactoin Done Sucesfully");
+		if(ps.executeUpdate()>0) {
+			return true;
 		//Thread.sleep(3000);
 		}
+		return false;
 	}
 	
-	public int Balance(int id) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from walletusers where id=?");
-		ConnectionsParallel.ps.setInt(1,id);
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+	public int Balance(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("select * from walletusers where id=?");
+		ps.setInt(1,w.getWalletid());
+		ResultSet resultSet = ps.executeQuery();
 		resultSet.next();
 		return resultSet.getInt("balance");
 	}
-	public void deposit(int id,int amt) throws SQLException {
+	public int deposit(Wallet w,int amt) throws SQLException {
 		
-		int balance1 = this.Balance(id);
-			ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set balance=? where id=?");
-			ConnectionsParallel.ps.setInt(1,balance1+amt);
-			ConnectionsParallel.ps.setInt(2,id);
-			if(ConnectionsParallel.ps.executeUpdate()>0){
-				this.addCreditTransaction(id,amt);
+		int balance1 = this.Balance(w);
+			ps = conn.prepareStatement("update walletusers set balance=? where id=?");
+			ps.setInt(1,balance1+amt);
+			ps.setInt(2,w.getWalletid());
+			if(ps.executeUpdate()>0){
+				if(this.addCreditTransaction(w,amt)) {
+					return 1;
+					//System.out.println("Balance is " + this.Balance(w));
+				}
 				//System.out.println("Payment Done Successfully");
-				System.out.println("Balance is " + this.Balance(id));
+				return 0;
 			}
 			else {
-				System.out.println("Payment unsucessfull");
+				return 0;
 			}
 	}
 	
 	
-	public void fundTransfer(int id1,int id2,int amt) throws SQLException {
+	public int fundTransfer(Wallet w,Wallet w2,int amt) throws SQLException {
 		
-		if(this.withdraw(id1, amt) == 1) {
-			this.deposit(id2, amt);
-			
-			System.out.println("Balance is " + this.Balance(id1));
+		if(this.withdraw(w, amt) == 1) {
+			if(this.deposit(w2, amt) ==1) {
+				return 1;
+			}
+			//System.out.println("Balance is " + this.Balance(id1));
 		}
-		else {
-			this.lowBalance();
-		}
+		return 0;
 	}
-	public void viewTransactions(int id) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("select * from transactions where id=?");
-		ConnectionsParallel.ps.setInt(1, id);
-		ResultSet resultSet = ConnectionsParallel.ps.executeQuery();
+	public ArrayList<String>  viewTransactions(Wallet w) throws SQLException {
+		
+		ArrayList<String> s = new ArrayList<>();
+		StringBuilder sb = new StringBuilder(); 
+		ps = conn.prepareStatement("select * from transactions where id=?");
+		ps.setInt(1, w.getWalletid());
+		ResultSet resultSet = ps.executeQuery();
 
         if(resultSet.next()==false) {
-        	System.out.println("No Recors present in the Table");
+        	return s;
         	//Thread.sleep(3000);
         }
         else {
-        	System.out.println("Transactoins for "+id);
-        	System.out.println("Tansaction Id       Date           Amount        Type         Balance");
+        	
+        	
         	do {
-        		
-        		System.out.println(resultSet.getInt("transId")+"  "+resultSet.getString("date")+ "     "+resultSet.getInt("amount")+ "     "+resultSet.getString("type")+ "     "+resultSet.getInt("balance"));
+        		sb.append(resultSet.getInt("transId")+"  ");
+        		sb.append(resultSet.getString("date")+"  ");
+        		sb.append(resultSet.getInt("amount")+"  ");
+        		sb.append(resultSet.getString("type")+"  ");
+        		sb.append(resultSet.getInt("balance")+"  ");
+        		s.add(sb.toString());
+        		sb.setLength(0);
         	}while(resultSet.next());
         	//Thread.sleep(3000);
+        	return s;
         }
 	}
 	
-	public void update1(int id,String name) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set walletName=? where id=?");
-		ConnectionsParallel.ps.setInt(2,id);
-		ConnectionsParallel.ps.setString(1,name);
-		if(ConnectionsParallel.ps.executeUpdate()>0){
-			System.out.println("Updated name Successfully");
+	public boolean update(Wallet w) throws SQLException {
+		ps = conn.prepareStatement("update walletusers set walletName=?, walletEmailId=?, walletPhoneNumber=?, pin=? where id=?");
+		ps.setInt(5,w.getWalletid());
+		ps.setString(1,w.getWalletName());
+		ps.setString(2,w.getWalletEmailId());
+		ps.setLong(3,w.getWalletPhoneNumber());
+		ps.setInt(4,w.getPin());
+		if(ps.executeUpdate()>0){
+			return true;
 		}
 		else {
-			System.out.println("No records were Updated");
+			return false;
 		}
 	}
-	public void update1(int id,Long phn) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set walletPhoneNumber=? where id=?");
-		ConnectionsParallel.ps.setInt(2,id);
-		ConnectionsParallel.ps.setLong(1,phn);
-		if(ConnectionsParallel.ps.executeUpdate()>0){
-			System.out.println("Updated Phone Number Successfully");
-		}
-		else {
-			System.out.println("No records were Updated");
-		}
-	}
-	public void update2(int id,String email) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set walletEmailId=? where id=?");
-		ConnectionsParallel.ps.setInt(2,id);
-		ConnectionsParallel.ps.setString(1,email);
-		if(ConnectionsParallel.ps.executeUpdate()>0){
-			System.out.println("Updated E-mail Successfully");
-		}
-		else {
-			System.out.println("No records were Updated");
-		}
-	}
-	public void update2(int id,int pin) throws SQLException {
-		ConnectionsParallel.ps =ConnectionsParallel.conn.prepareStatement("update walletusers set pin=? where id=?");
-		ConnectionsParallel.ps.setInt(2,id);
-		ConnectionsParallel.ps.setInt(1,pin);
-		if(ConnectionsParallel.ps.executeUpdate()>0){
-			System.out.println("Updated your record Successfully");
-		}
-		else {
-			System.out.println("No records were Updated");
-		}
-	}
+	
 	
 	
 	
