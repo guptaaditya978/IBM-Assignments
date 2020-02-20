@@ -32,20 +32,20 @@ public class logoutservelet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		HttpSession session = request.getSession(false);
-		System.out.print(session);
-		if(session!=null) {
+		//System.out.print(logging out);
+//		if(session!=null) {
 			session.invalidate();
+			request.getSession().setAttribute("username", null);
 			out.print("You have been Logged Out");
 			
 				//Thread.sleep(2000);
-				response.sendRedirect("http://localhost:8090/dynamicstarter/index.html");
+				response.sendRedirect("index.html");
 		}
-		else {
-			out.print("Please Log In First");
-			System.out.print("Please Log In First");
-				
-				response.sendRedirect("http://localhost:8085/dynamicstarter/index.html");
-		}
+//		else {
+//			out.print("Please Log In First");
+//			System.out.print("Please Log In First");
+//				
+//				response.sendRedirect("index.html");
+//		}
 	}
 
-}
