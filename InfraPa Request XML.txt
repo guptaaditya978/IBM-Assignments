@@ -1,0 +1,46 @@
+Request 
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE PortAssignRequest SYSTEM "file:/appl/web/tomcat4/config/wwwprx/webapps/instar/dtd/PortAssignRequest.dtd">
+<PortAssignRequest ForwardCount="1">
+   <Requester>
+      <Login>FM</Login>
+      <Password>XXXXXXX</Password>
+   </Requester>
+   <Action>createInfraStructurePortAssignment</Action>
+   <Agent>PortAssignment</Agent>
+   <TransactionId>96e9ea7213166b155db35</TransactionId>
+   <Data>
+      <Requester>
+         <Login>ipdepot</Login>
+         <SystemName>FM</SystemName>
+      </Requester>
+   </Data>
+   <Data>
+      <PortAssignment>
+         <CompIdA>785592</CompIdA>
+         <CompIdZ>785626</CompIdZ>
+         <ConnectType>BACKBONE</ConnectType>
+         <AssignIp>Y</AssignIp>
+         <ExtIp></ExtIp>
+         <IpLength></IpLength>
+         <CompositeLink>Y</CompositeLink>
+         <CLNumber></CLNumber>
+         <NewClNumber>286</NewClNumber>
+         <GenLagId>false</GenLagId>
+         <UseNonInternalCustaddr>false</UseNonInternalCustaddr>
+         <IsEthernetFlag>false</IsEthernetFlag>
+         <IsVlanFlag>false</IsVlanFlag>
+         <IsCompositeLinkFlag>true</IsCompositeLinkFlag>
+         <IsNewLinkFlag>true</IsNewLinkFlag>
+         <IsALag>false</IsALag>
+         <IsZLag>false</IsZLag>
+         <ExtAddrSource></ExtAddrSource>
+         <ExtWanASideArAddrIndex>-1</ExtWanASideArAddrIndex>
+         <ExtWanASideCrAddrIndex>-1</ExtWanASideCrAddrIndex>
+         <NoCrAddr>false</NoCrAddr>
+         <ExtIpV6Ip></ExtIpV6Ip>
+         <ExtIpV6IpLength></ExtIpV6IpLength>
+      </PortAssignment>
+   </Data>
+   <Option>xiimessage.message_id=96e9ea7213166b155e836</Option>
+</PortAssignRequest>

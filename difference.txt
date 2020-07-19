@@ -1,0 +1,37 @@
+Physical
+CL_Logical link - is not present (ip_port_asgmgt)
+beg_slot - allocated (component)
+end_slot - allocated (component)
+interface _string - it is hunderedGig connection (ip_port_asgmt)
+port_name - given (component)
+assoc_port -allocated (component)
+port - allocated (component)
+slot_name - allocated (component)
+equip_Id- allocated (component)
+lag_seq - present (lag)
+
+
+
+
+Virtual
+CL_Logical link - it is present (ip_port_asgmgt)
+beg_slot - not allocated (component)
+end_slot - not allocated (component)
+interface _string - it is bundle ether connection (ip_port_asgmt)
+port_name - not given (component)
+assoc_port -not allocated (component)
+port - not allocated (component)
+slot_name - not allocated (component)
+equip_Id- not allocated (component)
+lag_seq - not present 
+
+
+Java Full Stack Development Project Report and Training
+
+
+
+Kapil Gomatiwala
+
+
+Divya Radhakrishnan
+

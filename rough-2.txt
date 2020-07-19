@@ -1,0 +1,63 @@
+gunzip ipd.app.wwwprx.20200522_00:01.log.gz
+
+
+cp ipd.app.wwwprx.20200522_00:01.log.gz ~
+
+gzless - without extraction the file
+gzunzip- unzipping the file or extracting the
+
+
+
+what is infrastructure connection
+what is the 
+what is lag and different types.
+
+
+
+1. what is the requests
+2. 
+
+
+createInfraStructurePortAssignment
+
+
+if (infraAsgmtInfo.isAutoAssign()) 
+                { 
+                    if (!infraAsgmtInfo.getExtIPAddr().equals("") 
+                        || !infraAsgmtInfo.getExtIPAddrSrc().equals("")) 
+                    { 
+                        msg = "Manual IP Address or " + "Manual IP Address Source is Passed. " 
+                            + "Can not Auto-Assign IP Address."; 
+                        AppLog.println(msg); 
+                        throw new ValidationException(msg); 
+                    }
+
+
+if (infraAsgmtInfo.isEthernet() && infraAsgmtInfo.isVlan()) 
+                { 
+                    if (!iaUtil.isEthernet(compId)) 
+                    { 
+                        msg = "CompId" + compId + " is not an Ethernet " 
+                            + "port and can not be used for Ethernet connection"; 
+                        AppLog.println(msg); 
+                        throw new ValidationException(msg); 
+                    } 
+                }
+
+if (equipId == null || equipId.equals("")) 
+                    { 
+                        msg = "Comp Id" + compId + " is not on a valid Equipment"; 
+                        AppLog.println(msg); 
+                        throw new ValidationException(msg); 
+                    }
+
+
+
+Select i.IP_PORT_ASGMT_ID, i.INTERFACE_STRING, c.BEG_SLOT, i.CL_NUMBER, i.PORT_STATE, e.EQUIP_NAME , s.SERV_NAME
+from (((((( ip_port_asgmt  i Inner JOIN IP_ASSIGNED_ENDPT ia on i.IP_ENDPT = ia.ENDPOINT_ID ) 
+INNER JOIN  Equipment e on ia.EQUIP_ID = e.EQUIP_ID ) 
+INNER JOIN  Component c on ia.COMP_ID = c.COMP_ID)
+Inner JOIN  IP_SERV_ACC_PT ips on i.SERV_ACC_PT_ID = ips.SERV_ACC_PT_ID)
+Inner JOIN  IP_SERVICE_CUST ipsc on ips.SERV_ID = ipsc.SERV_ID)
+Inner JOIN  SERVICE s on ips.SERV_ID = s.SERV_ID)
+where c.COMP_ID = 8811909;

@@ -1,0 +1,114 @@
+XML Transactions:
+
+Create Infrastructure Assignment
+
+SELECT * FROM XIIMESSAGE  
+WHERE TRUNC(START_TIME) >= TO_DATE('15-Oct-2013')
+ AND ACTION = 'createInfraStructurePortAssignment' 
+ AND STATUS = 'FAILURE'
+ AND REQUEST LIKE '%<comp id>%'  
+ORDER BY START_TIME DESC;
+
+
+Delete Infrastructure Assignment
+
+
+SELECT * FROM XIIMESSAGE  
+WHERE TRUNC(START_TIME) >= TO_DATE('15-Oct-2013')
+ AND ACTION = 'deleteInfraStructurePortAssignment' 
+ AND STATUS = 'FAILURE'
+ AND REQUEST LIKE '%<comp id>%'  
+ORDER BY START_TIME DESC;
+
+
+Rehome
+
+SELECT * FROM XIIMESSAGE  
+WHERE TRUNC(START_TIME) >= TO_DATE('15-Oct-2013')
+ AND ACTION = 'rehomeTrunkPortRequest' ;
+
+
+
+SELECT * FROM XIIMESSAGE  
+WHERE TRUNC(START_TIME) >= TO_DATE('15-Oct-2013')
+ AND ACTION = 'cutoverRehomePortRequest' ;
+
+
+SELECT * FROM XIIMESSAGE  
+WHERE TRUNC(START_TIME) >= TO_DATE('15-Oct-2013')
+ AND ACTION = 'cancelRehomePortRequest' ;
+
+
+************************
+
+
+Log File:
+
+For everything other then ip address stuff
+/appl/web/wwwprx/ipdepot/logs/IPD
+
+ipd.app.wwwprx.<Date>_00:01.log
+
+
+
+For ip adress stuff
+
+Inv log in /appl/web/nipaprx/logdir/inv_weblog direc
+
+
+************************
+****** Networks Supported **********
+
+1. CBB
+2. VAN-MOW
+3. Canada
+4. IPAG-CBB
+5. MOBLTY
+
+
+****** Connections supported *********
+
+1. CL Group without vlan ---  New conneciton and MACD
+2. CL Group with vlan --- New Conneciton and MACD
+3. Lag Group  --- For Juniper
+	IPAG - IPAG
+	VPLS PE - IPAG
+	VPLS PE - VPLS PE
+	VAN PE / CLOUD PE / DDOS - CRS
+	VAN PE - CRS
+4. Single Link Connection without vlan
+5. Single Link conneciton with vlan
+6. One Ended connection
+7. Rehome for IPAG-IPAG and IPAG-VPLS connections also supported.
+8. V4 and Dual Stack(v4/v6) connection supported
+
+
+
+******* DB Tables Impacted ***********
+
+ip_port_asgmt
+ip_assigned_endpt
+ip_serv_acc_pt
+ip_transport
+lag
+lag_port_mapping
+serial_ip_addr
+instar_order
+configlets (for non )
+circuit
+
+
+
+
+********* Java Files Involved ***********
+
+DirectSession.java
+InfraAsgmtAgentImpl.java
+InfraAsgmtHomeImpl.java
+InfraAsgmtUtilImpl.java
+EndPointDb.java
+
+
+
+************************
+
